@@ -3,8 +3,8 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['airbnb-base', 'prettier'],
-  plugins: ['prettier', 'eslint-plugin-import-helpers'],
+  extends: ['airbnb-base', 'prettier', 'plugin:jest/recommended'],
+  plugins: ['prettier', 'eslint-plugin-import-helpers', 'jest'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',

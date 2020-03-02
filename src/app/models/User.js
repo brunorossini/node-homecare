@@ -1,5 +1,5 @@
-import Sequelize, { Model } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import Sequelize, { Model } from 'sequelize';
 
 class User extends Model {
   static init(sequelize) {
@@ -10,8 +10,21 @@ class User extends Model {
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
         administrator: Sequelize.BOOLEAN,
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          field: 'created_at',
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          field: 'updated_at',
+        },
       },
-      { sequelize }
+      {
+        sequelize,
+        tableName: 'users',
+      }
     );
 
     this.addHook('beforeSave', async user => {
