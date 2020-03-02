@@ -42,4 +42,21 @@ describe('User', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it('should be able to create session', async () => {
+    const user = await factory.create('User', {
+      email: 'mail@mail.zxc',
+      password: '123456',
+    });
+
+    await request(app)
+      .post('/users')
+      .send(user);
+
+    const response = await request(app)
+      .post('/session')
+      .send(user);
+
+    expect(response.body).toHaveProperty('token');
+  });
 });
