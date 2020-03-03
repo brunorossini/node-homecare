@@ -2,9 +2,11 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import FileController from './app/controllers/FileController';
+import OrderController from './app/controllers/OrderController';
 import ProductController from './app/controllers/ProductController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
+import isAdmin from './app/middlewares/administrator';
 import authMiddleware from './app/middlewares/auth';
 import multerConfig from './config/multer';
 
@@ -20,7 +22,13 @@ routes.get('/users', UserController.index);
 routes.put('/users', UserController.update);
 
 routes.get('/products', ProductController.index);
-routes.post('/products', ProductController.store);
+routes.post('/products', isAdmin, ProductController.store);
+routes.put('/products/:id', isAdmin, ProductController.update);
+routes.delete('/products/:id', isAdmin, ProductController.delete);
+
+routes.get('/orders', OrderController.index);
+routes.post('/orders', OrderController.store);
+routes.delete('/orders/:id', OrderController.delete);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
