@@ -44,18 +44,18 @@ describe('User', () => {
   });
 
   it('should be able to create session', async () => {
-    const user = await factory.create('User', {
+    const { name, email, password } = await factory.create('User', {
       email: 'mail@mail.zxc',
       password: '123456',
     });
 
     await request(app)
       .post('/users')
-      .send(user);
+      .send({ name, email, password });
 
     const response = await request(app)
       .post('/session')
-      .send(user);
+      .send({ email, password });
 
     expect(response.body).toHaveProperty('token');
   });
