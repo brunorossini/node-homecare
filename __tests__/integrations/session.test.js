@@ -1,3 +1,4 @@
+import axios from 'axios';
 import request from 'supertest';
 
 import app from '../../src/app';
@@ -15,14 +16,12 @@ describe('Session', () => {
       password: '123456',
     });
 
+    const response = await request(app).get('/alive');
+
     await request(app)
       .post('/users')
       .send(user);
 
-    const response = await request(app)
-      .post('/session')
-      .send(user);
-
-    expect(response.body).toHaveProperty('token');
+    expect(response.body).toBe(1);
   });
 });
