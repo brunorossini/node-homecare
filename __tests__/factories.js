@@ -12,8 +12,11 @@ factory.define('User', User, {
 
 factory.define('Product', Product, {
   name: faker.commerce.productName(),
-  description: faker.lorem.words(),
-  price: faker.commerce.price(),
+  description: faker.commerce.productName(),
+  price: faker.random.number({
+    min: 10,
+    max: 50,
+  }),
 });
 
 export default factory;
