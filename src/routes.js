@@ -3,6 +3,7 @@ import Brute from 'express-brute';
 import BruteRedis from 'express-brute-redis';
 import multer from 'multer';
 
+import AddressController from './app/controllers/AddressController';
 import FileController from './app/controllers/FileController';
 import OrderController from './app/controllers/OrderController';
 import ProductController from './app/controllers/ProductController';
@@ -39,6 +40,10 @@ routes.delete('/products/:id', isAdmin, ProductController.delete);
 routes.get('/orders', OrderController.index);
 routes.post('/orders', OrderController.store);
 routes.delete('/orders/:id', OrderController.delete);
+
+routes.post('/addresses', AddressController.store);
+routes.get('/addresses', AddressController.index);
+routes.delete('/addresses/:id', AddressController.delete);
 
 routes.post('/files', upload.single('file'), FileController.store);
 

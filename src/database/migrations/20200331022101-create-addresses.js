@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('products', {
+    return queryInterface.createTable('addresses', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -10,14 +10,29 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
-      description: {
+      street: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      number: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      complement: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      price: {
-        type: Sequelize.INTEGER,
+      suburb: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      city: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       user_id: {
@@ -39,6 +54,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('products');
+    return queryInterface.dropTable('addresses');
   },
 };

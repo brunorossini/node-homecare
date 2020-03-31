@@ -6,6 +6,7 @@ class Order extends Model {
       {
         amount: Sequelize.INTEGER,
         price: Sequelize.INTEGER,
+        note: Sequelize.STRING,
         createdAt: Sequelize.DATE,
       },
       {

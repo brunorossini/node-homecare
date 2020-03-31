@@ -63,7 +63,7 @@ class OrderController {
 
     if (order.user_id !== req.userId)
       return res.status(401).json({
-        error: "You don't habe permission to cancel this order",
+        error: "You don't have permission to cancel this order",
       });
 
     order.canceled_at = new Date();
