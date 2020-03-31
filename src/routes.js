@@ -17,15 +17,15 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 // PREVENT BRUTE FORCE IN REQUEST
-// const bruteStore = new RedisStore({
-//   host: process.env.REDIS_HOST,
-//   port: process.env.REDIS_PORT,
-// });
+const bruteStore = new RedisStore({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
 
-// const bruteForce = new ExpressBrute(bruteStore);
+const bruteForce = new ExpressBrute(bruteStore);
 
 routes.post('/users', UserController.store);
-routes.post('/session', SessionController.store);
+routes.post('/session', bruteForce.prevent, SessionController.store);
 
 routes.use(authMiddleware);
 
