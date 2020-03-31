@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import Brute from 'express-brute';
-import BruteRedis from 'express-brute-redis';
+import ExpressBrute from 'express-brute';
+import RedisStore from 'express-brute-redis';
 import multer from 'multer';
 
 import AddressController from './app/controllers/AddressController';
@@ -17,12 +17,12 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 // PREVENT BRUTE FORCE IN REQUEST
-const bruteStore = new BruteRedis({
+const bruteStore = new RedisStore({
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
 });
 
-const bruteForce = new Brute(bruteStore);
+const bruteForce = new ExpressBrute(bruteStore);
 
 routes.post('/users', UserController.store);
 routes.post('/session', bruteForce.prevent, SessionController.store);
