@@ -18,8 +18,7 @@ const upload = multer(multerConfig);
 
 // PREVENT BRUTE FORCE IN REQUEST
 const bruteStore = new RedisStore({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
+  url: process.env.REDIS_URL,
 });
 
 const bruteForce = new ExpressBrute(bruteStore);
