@@ -12,8 +12,8 @@ import ProviderController from './app/controllers/ProviderController';
 import SessionController from './app/controllers/SessionController';
 import StepController from './app/controllers/StepController';
 import UserController from './app/controllers/UserController';
-import isAdmin from './app/middlewares/administrator';
 import authMiddleware from './app/middlewares/auth';
+import isProvider from './app/middlewares/isProvider';
 import multerConfig from './config/multer';
 
 const routes = new Router();
@@ -36,13 +36,13 @@ routes.get('/users', UserController.index);
 routes.put('/users', UserController.update);
 
 routes.get('/products/:providerId', ProductController.index);
-routes.post('/products', isAdmin, ProductController.store);
-routes.put('/products/:id', isAdmin, ProductController.update);
-routes.delete('/products/:id', isAdmin, ProductController.delete);
+routes.post('/products', isProvider, ProductController.store);
+routes.put('/products/:id', isProvider, ProductController.update);
+routes.delete('/products/:id', isProvider, ProductController.delete);
 
 routes.get('/orders', OrderController.index);
 routes.post('/orders', OrderController.store);
-routes.delete('/orders/:id', OrderController.delete);
+routes.delete('/orders/:id', isProvider, OrderController.delete);
 
 routes.post('/addresses', AddressController.store);
 routes.get('/addresses', AddressController.index);
@@ -50,12 +50,12 @@ routes.delete('/addresses/:id', AddressController.delete);
 
 routes.get('/providers', ProviderController.index);
 
-routes.get('/steps/:id', StepController.index);
-routes.post('/steps', StepController.store);
-routes.delete('/steps/:id', StepController.delete);
+routes.get('/steps/:id', isProvider, StepController.index);
+routes.post('/steps', isProvider, StepController.store);
+routes.delete('/steps/:id', isProvider, StepController.delete);
 
-routes.post('/items', ItemController.store);
-routes.delete('/items/:id', ItemController.delete);
+routes.post('/items', isProvider, ItemController.store);
+routes.delete('/items/:id', isProvider, ItemController.delete);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
