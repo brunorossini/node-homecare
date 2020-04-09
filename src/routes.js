@@ -14,6 +14,7 @@ import StepController from './app/controllers/StepController';
 import UserController from './app/controllers/UserController';
 import authMiddleware from './app/middlewares/auth';
 import isProvider from './app/middlewares/isProvider';
+import isUser from './app/middlewares/isUser';
 import multerConfig from './config/multer';
 
 const routes = new Router();
@@ -35,20 +36,20 @@ routes.use(authMiddleware);
 routes.get('/users', UserController.index);
 routes.put('/users', UserController.update);
 
-routes.get('/products/:providerId', ProductController.index);
+routes.get('/products/:providerId', isUser, ProductController.index);
 routes.post('/products', isProvider, ProductController.store);
 routes.put('/products/:id', isProvider, ProductController.update);
 routes.delete('/products/:id', isProvider, ProductController.delete);
 
 routes.get('/orders', OrderController.index);
-routes.post('/orders', OrderController.store);
+routes.post('/orders', isUser, OrderController.store);
 routes.delete('/orders/:id', isProvider, OrderController.delete);
 
 routes.post('/addresses', AddressController.store);
 routes.get('/addresses', AddressController.index);
 routes.delete('/addresses/:id', AddressController.delete);
 
-routes.get('/providers', ProviderController.index);
+routes.get('/providers', isUser, ProviderController.index);
 
 routes.get('/steps/:id', isProvider, StepController.index);
 routes.post('/steps', isProvider, StepController.store);

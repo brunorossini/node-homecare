@@ -7,7 +7,14 @@ class OrderController {
   async index(req, res) {
     const orders = await Order.findAll({
       where: { provider_id: req.userId },
-      attributes: ['id', 'address', 'price', 'createdAt', 'deliveryFee'],
+      attributes: [
+        'id',
+        'address',
+        'price',
+        'createdAt',
+        'deliveryFee',
+        'resume',
+      ],
       order: [['createdAt', 'desc']],
       include: [
         {

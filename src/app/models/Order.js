@@ -9,6 +9,8 @@ class Order extends Model {
         deliveryFee: Sequelize.INTEGER,
         canceledAt: Sequelize.DATE,
         createdAt: Sequelize.DATE,
+        approvedAt: Sequelize.DATE,
+        resume: Sequelize.JSONB,
       },
       {
         sequelize,
