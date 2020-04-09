@@ -4,9 +4,10 @@ class Order extends Model {
   static init(sequelize) {
     super.init(
       {
-        amount: Sequelize.INTEGER,
+        address: Sequelize.STRING,
         price: Sequelize.INTEGER,
-        note: Sequelize.STRING,
+        deliveryFee: Sequelize.INTEGER,
+        canceledAt: Sequelize.DATE,
         createdAt: Sequelize.DATE,
       },
       {
@@ -18,9 +19,8 @@ class Order extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Product, { foreignKey: 'product_id', as: 'product' });
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-    this.belongsTo(models.File, { foreignKey: 'receipt_id', as: 'receipt' });
+    this.belongsTo(models.User, { foreignKey: 'provider_id', as: 'provider' });
   }
 }
 

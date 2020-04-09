@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
 
+import Item from '../models/Item';
 import Product from '../models/Product';
+import Step from '../models/Step';
 
 class ProductController {
   async store(req, res) {
@@ -20,12 +22,30 @@ class ProductController {
     if (productExist)
       return res.status(400).json({ error: 'Product already exists.' });
 
-    const { id, description, price } = await Product.create(req.body);
+    const { id, description, price } = await Product.create({
+      user_id: req.userId,
+      ...req.body,
+    });
     return res.json({ id, description, price });
   }
 
   async index(req, res) {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      where: { user_id: req.params.providerId },
+      attributes: ['id', 'name', 'description', 'price'],
+      include: [
+        {
+          model: Step,
+          attributes: ['name', 'min', 'max'],
+          include: [
+            {
+              model: Item,
+              attributes: ['name', 'description', 'price'],
+            },
+          ],
+        },
+      ],
+    });
     return res.json(products);
   }
 

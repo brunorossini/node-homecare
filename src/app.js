@@ -40,11 +40,12 @@ class App {
       new RateLimit({
         store: new RateLimitRedis({
           client: redis.createClient({
-            url: process.env.REDIS_URL,
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
           }),
         }),
         windowMs: 1000 * 60 * 15,
-        max: 100,
+        max: 10000,
       })
     );
   }

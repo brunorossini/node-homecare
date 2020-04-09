@@ -1,28 +1,19 @@
 import * as Yup from 'yup';
 
-import File from '../models/File';
 import Order from '../models/Order';
-import Product from '../models/Product';
+import User from '../models/User';
 
 class OrderController {
   async index(req, res) {
     const orders = await Order.findAll({
-      where: { user_id: req.userId },
-      attributes: ['id', 'amount', 'price', 'createdAt'],
+      where: { provider_id: req.userId },
+      attributes: ['id', 'address', 'price', 'createdAt', 'deliveryFee'],
       order: [['createdAt', 'desc']],
       include: [
         {
-          model: Product,
-          as: 'product',
-          attributes: ['id', 'name', 'price'],
-          include: [
-            { model: File, as: 'avatar', attributes: ['id', 'path', 'url'] },
-          ],
-        },
-        {
-          model: File,
-          as: 'receipt',
-          attributes: ['id', 'path', 'url'],
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'phone'],
         },
       ],
     });
@@ -31,20 +22,14 @@ class OrderController {
 
   async store(req, res) {
     const schema = Yup.object().shape({
-      amount: Yup.number().required(),
+      address: Yup.string().required(),
       price: Yup.number().required(),
-      product_id: Yup.number().required(),
+      provider_id: Yup.number().required(),
+      deliveryFee: Yup.number(),
     });
 
     if (!(await schema.isValid(req.body)))
       return res.status(400).json({ error: 'Validation fails' });
-
-    const productExist = await Product.findByPk(req.body.product_id);
-
-    if (!productExist)
-      return res
-        .status(400)
-        .json({ error: 'Does not correspond a valid product' });
 
     const order = await Order.create({ ...req.body, user_id: req.userId });
     return res.json(order);
@@ -54,19 +39,24 @@ class OrderController {
     const order = await Order.findByPk(req.params.id, {
       include: [
         {
-          model: Product,
-          as: 'product',
-          attributes: ['name'],
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'phone'],
         },
       ],
     });
 
-    if (order.user_id !== req.userId)
+    if (order.canceledAt)
+      res.status(400).json({
+        error: 'This order has been canceled previously',
+      });
+
+    if (order.provider_id !== req.userId)
       return res.status(401).json({
         error: "You don't have permission to cancel this order",
       });
 
-    order.canceled_at = new Date();
+    order.canceledAt = new Date();
     await order.save();
 
     // Queue Cancellation Email
