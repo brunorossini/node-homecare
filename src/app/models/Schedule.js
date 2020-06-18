@@ -1,22 +1,17 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Order extends Model {
+class Schedule extends Model {
   static init(sequelize) {
     super.init(
       {
-        address: Sequelize.STRING,
-        price: Sequelize.INTEGER,
-        deliveryFee: Sequelize.INTEGER,
-        canceledAt: Sequelize.DATE,
-        createdAt: Sequelize.DATE,
-        approvedAt: Sequelize.DATE,
-        resume: Sequelize.JSONB,
+        date: Sequelize.date,
       },
       {
         sequelize,
-        tableName: 'orders',
+        tableName: 'users',
       }
     );
+
     return this;
   }
 
@@ -26,4 +21,4 @@ class Order extends Model {
   }
 }
 
-export default Order;
+export default Schedule;
