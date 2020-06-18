@@ -10,8 +10,6 @@ import ScheduleController from './app/controllers/ScheduleController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
 import authMiddleware from './app/middlewares/auth';
-import isProvider from './app/middlewares/isProvider';
-import isUser from './app/middlewares/isUser';
 import multerConfig from './config/multer';
 
 const routes = new Router();
@@ -37,7 +35,7 @@ routes.post('/addresses', AddressController.store);
 routes.get('/addresses', AddressController.index);
 routes.delete('/addresses/:id', AddressController.delete);
 
-routes.get('/providers', isUser, ProviderController.index);
+routes.get('/providers', ProviderController.index);
 
 routes.get('/appointments', AppointmentController.index);
 routes.post('/appointments', AppointmentController.store);
