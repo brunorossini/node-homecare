@@ -2,9 +2,7 @@ import Redis from 'ioredis';
 
 class Cache {
   constructor() {
-    this.redis = new Redis({
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
+    this.redis = new Redis(process.env.REDIS_URL, {
       keyPrefix: 'cache:',
     });
   }
