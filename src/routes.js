@@ -1,19 +1,20 @@
 import { Router } from 'express';
 // import ExpressBrute from 'express-brute';
 // import RedisStore from 'express-brute-redis';
-import multer from 'multer';
+// import multer from 'multer';
 
 import AddressController from './app/controllers/AddressController';
 import AppointmentController from './app/controllers/AppointmentController';
+import AvailableController from './app/controllers/AvailableController';
 import ProviderController from './app/controllers/ProviderController';
 import ScheduleController from './app/controllers/ScheduleController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
 import authMiddleware from './app/middlewares/auth';
-import multerConfig from './config/multer';
+// import multerConfig from './config/multer';
 
 const routes = new Router();
-const upload = multer(multerConfig);
+// const upload = multer(multerConfig);
 
 // PREVENT BRUTE FORCE IN REQUEST
 // const bruteStore = new RedisStore({
@@ -36,6 +37,7 @@ routes.get('/addresses', AddressController.index);
 routes.delete('/addresses/:id', AddressController.delete);
 
 routes.get('/providers', ProviderController.index);
+routes.get('/providers/:providerId/available', AvailableController.index);
 
 routes.get('/appointments', AppointmentController.index);
 routes.post('/appointments', AppointmentController.store);
